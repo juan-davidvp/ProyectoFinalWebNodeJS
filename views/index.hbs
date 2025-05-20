@@ -1,21 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hola</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Davivienda | Personas (Estructura Limpia)</title>
+    <link rel="icon" href="imagenes/favicon.ico" type="image/x-icon">
+    <style>
+        /* Estilos básicos para visualización de la estructura (temporales) */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #333; }
+        header, section, footer, nav, main, article, aside { display: block; margin-bottom: 10px; padding:10px; border: 1px solid #eee; }
+        .placeholder-section { padding: 30px 15px; text-align: center; background-color: #fff; border-bottom: 1px solid #ddd; margin-bottom:0; }
+        .placeholder-section h2 { margin-top: 0; color: #e3001b; }
+        .placeholder-section p { color: #555; }
+        .header-placeholder { background-color: #e3001b; color: white; padding: 15px; border: none;}
+        .header-placeholder a { color: white; text-decoration: none; margin: 0 5px; }
+        .footer-placeholder { background-color: #343a40; color: white; padding: 20px 15px; text-align: center; border: none; }
+        .footer-placeholder a { color: #f8f9fa; margin: 0 10px; }
+        .menu-column { border: 1px dashed #ccc; padding: 10px; margin-bottom: 10px; }
+        .img-placeholder { background-color: #e9ecef; color: #6c757d; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 100px; border-radius: 4px; margin-bottom: 10px; }
+        ul { list-style: none; padding-left: 0;}
+        /* Clases simuladas para Bootstrap grid */
+        .container-placeholder { max-width: 1140px; margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; }
+        .row-placeholder { display: flex; flex-wrap: wrap; margin-left: -15px; margin-right: -15px; }
+        .col-placeholder { flex-basis: 0; flex-grow: 1; max-width: 100%; padding-left: 15px; padding-right: 15px; box-sizing: border-box; }
+        /* Ejemplo de columnas (puedes tener más o diferentes) */
+        .col-md-2-placeholder { flex: 0 0 16.66667%; max-width: 16.66667%; }
+        .col-md-3-placeholder { flex: 0 0 25%; max-width: 25%; }
+        .col-md-4-placeholder { flex: 0 0 33.33333%; max-width: 33.33333%; }
+        .col-md-6-placeholder { flex: 0 0 50%; max-width: 50%; }
+    </style>
 </head>
 <body>
-    <header>
-         <a href="/login"><h1>Ingresa a tu Banco de Confianza</h1></a>
+
+    <div class="loadingScreen-placeholder" style="text-align:center; padding:20px; background-color:#fff;">
+        <img loading="lazy" src="imagenes/iconos/loadingScreenIcon.gif" alt="Cargando..." style="height:50px;">
+        <p>Cargando...</p>
+    </div>
+
+    <header class="header-placeholder">
+        <div class="container-placeholder">
+            <div class="row-placeholder align-items-center py-2">
+                <div class="col-md-6-placeholder">
+                    <a href="#" title="Volver a Home personas">
+                        <img src="imagenes/logo-davivienda-blanco.svg" alt="Davivienda" style="height: 40px;"> </a>
+                </div>
+                <div class="col-md-6-placeholder text-end">
+                    <nav class="d-inline-block me-3">
+                        <a href="#" class="active">Personas</a>
+                        <a href="#">Empresas</a>
+                    </nav>
+                    <a href="/login"><button type="button" onclick="/views/login.hbs" style="background-color: #fff; color: #e3001b; border:none; padding: 8px 15px; border-radius:4px;">Ingreso Clientes</button></a>
+                    
+                </div>
+            </div>
+
+            <div class="aqui-puedo-container mt-3 p-3" style="background-color: #f0f0f0; border-radius: 5px;">
+                 <div class="row-placeholder align-items-center">
+                    <div class="col-md-3-placeholder">
+                        <button type="button" style="background:none; border:none; color:#333; font-weight:bold;">Aquí puedo <span class="dropdown-arrow">&#9660;</span></button>
+                    </div>
+                    <div class="col-md-9-placeholder">
+                        <div class="buscador-aqui-puedo d-flex justify-content-end">
+                            <a href="#" class="me-3">
+                                <img loading="lazy" src="imagenes/Icono_apel.png" alt="Abrir Productos en línea" style="height:24px; vertical-align:middle;">
+                                <span style="color:#333; font-size:0.9em;">Abrir Productos en línea</span>
+                            </a>
+                            <a href="#" class="me-3">
+                                <img loading="lazy" src="imagenes/Icono_pagos_en_linea_PSE.png" alt="Pagos en línea y PSE" style="height:24px; vertical-align:middle;">
+                                <span style="color:#333; font-size:0.9em;">Pagos en línea y PSE</span>
+                            </a>
+                            <a href="#">
+                                <img loading="lazy" src="imagenes/icono_agendamiento.png" alt="Visitar una oficina" style="height:24px; vertical-align:middle;">
+                                <span style="color:#333; font-size:0.9em;">Visitar una oficina</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="aqui-puedo-menu mt-3" style="background-color: #fff; padding:15px; border-radius:5px;">
+                    <div class="row-placeholder">
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono casa"></i> Construir mi futuro</h5>
+                            <ul>
+                                <li><a href="#">Vivienda</a></li>
+                                <li><a href="#">Vehículo</a></li>
+                                <li><a href="#">Inversiones</a></li>
+                                <li><a href="#">Nómina y Pensión</a></li>
+                                <li><a href="#">Educación</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono dinero"></i> Manejar mi dinero</h5>
+                            <ul>
+                                <li><a href="#">Portafolio de Servicios</a></li>
+                                <li><a href="#">Cuentas Transaccionales</a></li>
+                                <li><a href="#">Tarjetas Débito</a></li>
+                                <li><a href="#">Giros Internacionales</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono compra"></i> Alcanzar lo que quiero</h5>
+                            <ul>
+                                <li><a href="#">Créditos de Libre Inversión</a></li>
+                                <li><a href="#">Créditos Libranza</a></li>
+                                <li><a href="#">Compra de Cartera</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono tarjeta"></i> Comprar lo que deseo</h5>
+                            <ul>
+                                <li><a href="#">Tarjeta de Crédito</a></li>
+                                <li><a href="#">Mundo Diners Club</a></li>
+                                <li><a href="#">Davipuntos</a></li>
+                                <li><a href="#">Compras Virtuales</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="row-placeholder mt-3">
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono familia"></i> Respaldar a mi familia</h5>
+                            <ul>
+                                <li><a href="#">Portafolio Familia</a></li>
+                                <li><a href="#">Tarjetas Amparadas</a></li>
+                                <li><a href="#">Cuenta Niños</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono grafico"></i> Administrar mis inversiones</h5>
+                            <ul>
+                                <li><a href="#">Davivienda Panamá</a></li>
+                                <li><a href="#">Davivienda Miami</a></li>
+                                <li><a href="#">Davivienda Corredores</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono proteger"></i> Proteger mi patrimonio</h5>
+                            <ul>
+                                <li><a href="#">Seguros para Familia</a></li>
+                                <li><a href="#">Seguros para Bienes</a></li>
+                                <li><a href="#">Seguros para Casa</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3-placeholder menu-column">
+                            <h5 style="color:#e3001b;"><i class="icono pagar"></i> Pagar fácilmente</h5>
+                            <ul>
+                                <li><a href="#">Mis Pagos Automáticos</a></li>
+                                <li><a href="#">Pagos en Línea y PSE</a></li>
+                                <li><a href="#">Comprar con Código QR</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="opciones-usuario-aqui-puedo mt-4 text-center">
+                        <ul class="d-flex justify-content-center">
+                            <li class="mx-3"><a href="#"><i class="icon-ap ico-conocer"></i> Conocer DaviPlata</a></li>
+                            <li class="mx-3"><a href="#"><i class="icon-ap ico-aprender"></i> Educación Financiera</a></li>
+                            <li class="mx-3"><a href="#"><i class="icon-ap ico-asesorame"></i> Asesorarme si vivo o viajo al exterior</a></li>
+                            <li class="mx-3"><a href="#"><i class="icon-ap ico-aprender"></i> Defensor del consumidor</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
     </header>
-    <main>
-       <p>Juan David Velez Piedrahita.</p>
-        
+
+    <aside style="position: fixed; top: 50%; right: 0; transform: translateY(-50%); background-color: rgba(227, 0, 27, 0.8); padding: 10px; border-radius: 5px 0 0 5px;">
+        <ul id="side-navigation-dots">
+            <li><a href="#bienvenido" title="Bienvenido"><i class="icono ico-bienvenido" style="color:white; font-size:1.2em; display:block; margin-bottom:10px;">B</i></a></li>
+            <li><a href="#app-davivienda" title="App Davivienda"><i class="icono ico-vehiculo" style="color:white; font-size:1.2em; display:block; margin-bottom:10px;">A</i></a></li>
+            <li><a href="#seguridad" title="Seguridad Davivienda"><i class="icono ico-movil" style="color:white; font-size:1.2em; display:block;">S</i></a></li>
+            </ul>
+    </aside>
+
+    <main class="container-placeholder mt-4">
+        <section id="bienvenido" class="placeholder-section">
+            <h2>Bienvenido a Davivienda</h2>
+            <div class="img-placeholder">[Imagen o contenido de bienvenida]</div>
+            <p>Contenido de la sección de bienvenida.</p>
+        </section>
+
+        <section id="app-davivienda" class="placeholder-section" style="background-color: #f0f0f0;">
+            <h2>App Davivienda</h2>
+            <div class="img-placeholder">[Imagen o contenido sobre la App Davivienda]</div>
+            <p>Información y características de la App Davivienda.</p>
+        </section>
+
+        <section id="seguridad" class="placeholder-section">
+            <h2>Seguridad Davivienda</h2>
+            <div class="img-placeholder">[Imagen o contenido sobre seguridad]</div>
+            <p>Consejos e información sobre seguridad en Davivienda.</p>
+        </section>
+
+        <section id="info-corporativa-footer" class="placeholder-section" style="background-color: #e9ecef;">
+            <h2>Información Adicional</h2>
+            <div class="row-placeholder">
+                <div class="col-md-4-placeholder">
+                    <h5>¿Quiénes somos?</h5>
+                    <p><a href="#">Sobre Nosotros</a></p>
+                </div>
+                <div class="col-md-4-placeholder">
+                    <h5>Inversionistas</h5>
+                    <p><a href="#">Información para inversionistas</a></p>
+                </div>
+                <div class="col-md-4-placeholder">
+                    <h5>Más Información</h5>
+                    <p><a href="#">Información adicional</a></p>
+                </div>
+            </div>
+        </section>
     </main>
-    <footer>
-        <p>&copy; 2025 - Desarrollo de Experiencias Multimedia</p>
+
+    <footer class="footer-placeholder pt-5 pb-4 mt-4">
+        <div class="container-placeholder">
+            <div class="row-placeholder">
+                <div class="col-md-3-placeholder text-start mb-3">
+                    <h5>Productos y Servicios</h5>
+                    <ul>
+                        <li><a href="#">Cuentas</a></li>
+                        <li><a href="#">Tarjetas de Crédito</a></li>
+                        <li><a href="#">Créditos</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3-placeholder text-start mb-3">
+                    <h5>Acerca de Davivienda</h5>
+                    <ul>
+                        <li><a href="#">Quiénes Somos</a></li>
+                        <li><a href="#">Sostenibilidad</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3-placeholder text-start mb-3">
+                    <h5>Ayuda y Soporte</h5>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Seguridad</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3-placeholder text-start mb-3">
+                    <h5>Síganos</h5>
+                    <div>
+                        <a href="#">Facebook</a> | <a href="#">Twitter</a> | <a href="#">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: #555;">
+            <div class="text-center mt-3">
+                <p><small>&copy; 2024 Davivienda. Todos los derechos reservados.</small></p>
+                <p><small><a href="#">Términos y Condiciones</a> | <a href="#">Política de Privacidad</a></small></p>
+            </div>
+        </div>
     </footer>
-</body>
+
+    </body>
 </html>
