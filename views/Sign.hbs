@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banking Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .dashboard-container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        h1, h2 { color: #333; }
+        .account-summary { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        .account-summary p { margin: 5px 0; }
+        .transactions-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .transactions-table th, .transactions-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .transactions-table th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, {{userName}}</h1>
+
+        {{#if message }}
+            {{!-- Si además 'data_user' (el usuario logueado) está definido, personaliza el mensaje. --}}
+            {{#if data_user }}
+                <h2 class="alert alert-success"> {{message}} {{data_user.name}} </h2>
+            {{else}}
+                 {{!-- Si solo hay 'message' (probablemente un error genérico o informativo antes del login), muéstralo. --}}
+                {{!-- Podríamos necesitar una clase diferente para errores, ej: alert-danger --}}
+                <h2 class="alert alert-danger">{{message}}</h2>
+            {{/if}}
+        {{/if}}
+
+        <div class="account-summary">
+            <h2>Account Summary</h2>
+            <p><strong>Account Number:</strong> {{accountNumber}}</p>
+            <p><strong>Current Balance:</strong> ${{balance}}</p>
+            {{!-- Add more account details here if needed --}}
+        </div>
+
+        <div class="recent-transactions">
+            <h2>Recent Transactions</h2>
+            <table class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each transactions}}
+                    <tr>
+                        <td>{{this.date}}</td>
+                        <td>{{this.description}}</td>
+                        <td>${{this.amount}}</td>
+                        <td>{{this.type}}</td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="4">No recent transactions found.</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        {{!-- Add other dashboard sections here (e.g., quick links, notifications) --}}
+
+    </div>
+</body>
+</html>

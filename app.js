@@ -1,37 +1,57 @@
-const express = require("express"); //con esto Podemos inicializar nuestro server en NODE JS.
+// 1. Imports de módulos necesarios
+const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv');
+//const cookieParser = require('cookie-parser'); // Si lo usas para otras cosas, si no, no es estrictamente necesario para express-session.
+const session = require('express-session'); // Importar express-session
 
-const app = express(); //Con esto nos aseguramos de encender el server en nuestra app.
-const path = require("path"); //Con esto le decimos a la app que vamos a usar rutas.
-const mysql = require("mysql"); //Con esto le decimos a la app que vamos a usar mysql como base de datos.
-const dotenv = require("dotenv"); //Con esto le decimos a la app que vamos a usar dotenv para manejar variables de entorno.
-const publicPath = path.join(__dirname, "public"); //Con esto le decimos a la app que vamos a usar la carpeta public como carpeta publica.
+// 2. Configuración de dotenv (cargar variables de entorno)
+dotenv.config({
+    path: './.env'
+});
 
+// 3. Inicialización de la aplicación Express
+const app = express();
 
-app.use(express.static(publicPath)); 
-app.use(express.urlencoded({extended: false})); 
-app.use(express.json()); 
+// 4. Configuración de directorio de archivos públicos
+const publicDirectory = path.join(__dirname, './public');
+app.use(express.static(publicDirectory));
 
-app.use('/auth', require('./routes/auth')); //Con esto le decimos a la app que vamos a usar el router de la carpeta routes.
-app.use('/', require('./routes/page')); //Con esto le decimos a la app que vamos a usar el router de la carpeta routes.
+// 5. Middlewares para parsear el cuerpo de las solicitudes (antes de las rutas y de la sesión si es posible, aunque la sesión no depende directamente de estos)
+// Parsear URLs codificadas (como las de formularios HTML)
+app.use(express.urlencoded({ extended: false }));
+// Parsear payloads JSON
+app.use(express.json());
+// Parsear cookies (si lo necesitas para algo más que la sesión, si no, express-session lo maneja internamente)
+//app.use(cookieParser()); // Asegúrate de que SESSION_SECRET se cargue antes si cookie-parser usa un secreto.
 
-dotenv.config({path : "./.env"}); 
-app.set("view engine", "hbs"); 
-
-const db = mysql.createConnection({ //Con esto le decimos a la app que vamos a usar mysql como base de datos.
-    host: process.env.DATABASE_HOST, //Con esto le decimos a la app que la base de datos esta en localhost.
-    user: process.env.DATABASE_USER, //Con esto le decimos a la app que el usuario de la base de datos es root.
-    password: process.env.DATABASE_PASSWORD, //Con esto le decimos a la app que la contraseña de la base de datos es vacia.    
-    database: process.env.DATABASE //Con esto le decimos a la app que la base de datos que vamos a usar es test.
-}); //Con esto le decimos a la app que la base de datos que vamos a usar es test.
-
-db.connect((err) => { //Con esto le decimos a la app que se conecte a la base de datos.
-    if (err) { //Con esto le decimos a la app que si hay un error al conectarse a la base de datos, muestre un mensaje en la consola.
-        throw err; //Con esto le decimos a la app que si hay un error al conectarse a la base de datos, muestre un mensaje en la consola.
+// 6. Configuración del middleware de express-session (¡IMPORTANTE: ANTES de las rutas y del middleware que accede a req.session!)
+app.use(session({
+    secret: process.env.SESSION_SECRET, // Asegúrate que SESSION_SECRET esté en tu .env
+    resave: false,
+    saveUninitialized: false, // Cambiado a false según buenas prácticas
+    cookie: {
+        maxAge: 60 * 60 * 1000 // 1 hora de duración para la cookie de sesión
+        // secure: true // Descomenta esto si estás en producción y usando HTTPS
     }
-    console.log("Mysql Connected..."); //Con esto le decimos a la app que si se conecta a la base de datos, muestre un mensaje en la consola.
-}); //Con esto le decimos a la app que si se conecta a la base de datos, muestre un mensaje en la consola.
+}));
 
+// 7. Middleware para hacer disponible 'user' de la sesión en todas las vistas (DESPUÉS de app.use(session(...)))
+// Esta es la línea 14 que te da error, ahora debería funcionar porque req.session estará definido.
+app.use((req, res, next) => {
+    res.locals.user = req.session.user; // req.session debería estar definido por el middleware de sesión anterior
+    next();
+});
 
-app.listen(3000, () => {
-    console.log("Server on port 3000"); //Con esto le decimos a la app que escuche en el puerto 3000 y que muestre un mensaje en la consola.
+// 8. Configuración del motor de plantillas (Handlebars)
+app.set('view engine', 'hbs');
+
+// 9. Definición de Rutas (DESPUÉS de todos los middlewares de configuración general)
+app.use('/', require('./routes/page'));
+app.use('/auth', require('./routes/auth'));
+
+// 10. Inicio del servidor
+const PORT = process.env.PORT || 3000; // Usar variable de entorno para el puerto o 3000 por defecto
+app.listen(PORT, () => {
+    console.log(`Server on port ${PORT}`);
 });

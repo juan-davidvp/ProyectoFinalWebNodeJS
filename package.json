@@ -1,5 +1,5 @@
 {
-  "name": "mysql",
+  "name": "mi-proyecto-nodejs-mysql",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,9 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "hbs": "^4.2.0",
-    "mysql": "file:"
+    "mi-proyecto-nodejs-mysql": "file:",
+    "mysql": "^2.18.1"
   }
 }

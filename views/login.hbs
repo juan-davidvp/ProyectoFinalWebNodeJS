@@ -15,14 +15,20 @@
                 <input type="text" id="name" name="name" placeholder="Enter your Name" required>
             </div>
             <div class="form-group">
-                <label for="username">Email</label>
-                <input type="text" id="username" name="username" placeholder="Enter your Email" required>
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Enter your Email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <button type="submit" class="btn">Login</button>
+
+
+            {{#if message}}
+                <p class="success"> Este es el mensaje {{message}}</p>
+            {{/if}} 
+
         </form>
     </div>
 </body>
