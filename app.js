@@ -49,7 +49,8 @@ app.set('view engine', 'hbs');
 // 9. Definición de Rutas (DESPUÉS de todos los middlewares de configuración general)
 app.use('/', require('./routes/page'));
 app.use('/auth', require('./routes/auth'));
-
+app.use('/auth', require('./routes/auth'));
+app.use(express.static("public"));
 // 10. Inicio del servidor
 const PORT = process.env.PORT || 3000; // Usar variable de entorno para el puerto o 3000 por defecto
 app.listen(PORT, () => {

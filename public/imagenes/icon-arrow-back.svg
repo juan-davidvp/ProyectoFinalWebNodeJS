@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Arrow</title>
+    <defs>
+        <path d="M2.41421359,7.00000004 L7.70710681,1.70710682 C8.0976311,1.31658253 8.0976311,0.683417552 7.70710681,0.29289326 C7.31658251,-0.0976310313 6.68341754,-0.0976310313 6.29289324,0.29289326 L0.292893244,6.29289326 C-0.0976310479,6.68341755 -0.0976310479,7.31658253 0.292893244,7.70710682 L6.29289324,13.7071068 C6.68341754,14.0976311 7.31658251,14.0976311 7.70710681,13.7071068 C8.0976311,13.3165825 8.0976311,12.6834176 7.70710681,12.2928933 L2.41421359,7.00000004 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="002---Solicitar-Vehículo-móvil---002D" transform="translate(-16.000000, -112.000000)">
+            <g id="Atrás" transform="translate(16.000000, 112.000000)">
+                <g id="04-iconos/01-24x24_/Arrows/Left" transform="translate(8.000000, 5.000000)">
+                    <g id="Mask" transform="translate(-0.000000, -0.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Shape" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
