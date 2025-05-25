@@ -3,287 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Davivienda | Personas (Bootstrap)</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Davivienda | Personas (Header DaviviendaHeader.tsx)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" href="imagenes/favicon.ico" type="image/x-icon">
     <style>
         body {
-            font-family: Arial, sans-serif; /* Fuente base, Bootstrap usará su propia pila de fuentes */
-            padding-top: 100px; /* Ajuste para el header fijo si se implementara con JS */
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            padding-top: 110px;
         }
-        /* Color principal de Davivienda */
+
+        /* === INICIO NUEVOS ESTILOS HEADER (Basados en DaviviendaHeader.tsx y Tailwind config) === */
         .davivienda-red-bg {
-            background-color: #e3001b;
+            background-color: #E31E24; /* Tailwind davivienda.red */
         }
-        .davivienda-red-text {
-            color: #e3001b;
+        .davivienda-red-dark-hover:hover {
+            background-color: #C41E24; /* Tailwind davivienda.red-dark */
         }
         .davivienda-light-gray-bg {
-            background-color: #f0f0f0;
+            background-color: #F3F4F6; /* Tailwind davivienda.light-gray */
         }
-        .davivienda-header-link {
+        .davivienda-dark-gray-text {
+            color: #374151; /* Tailwind davivienda.dark-gray */
+        }
+        .davivienda-gray-text {
+            color: #6B7280; /* Tailwind davivienda.gray */
+        }
+
+        /* Estilos para la barra roja principal */
+        .davivienda-main-red-bar {
+            /* py-2 en Tailwind es 0.5rem padding top/bottom. my-[5px] es margin top/bottom 5px. */
+            /* Bootstrap py-2 es 0.5rem. Se añade un poco más de padding para igualar visualmente. */
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+        }
+
+        .davivienda-logo .logo-icon-circle {
+            width: 32px; /* Tailwind w-8 */
+            height: 32px; /* Tailwind h-8 */
+            background-color: #FBBF24; /* Tailwind bg-yellow-400 (aproximado) */
+            border-radius: 50%; /* Tailwind rounded-full */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #E31E24; /* Tailwind text-davivienda-red */
+            font-weight: bold; /* Tailwind font-bold */
+            font-size: 0.875rem; /* Tailwind text-sm */
+            margin-right: 0.5rem; /* Tailwind space-x-2 */
+        }
+        .davivienda-logo .logo-text {
+            font-size: 1.25rem; /* Tailwind text-xl */
+            font-weight: bold; /* Tailwind font-bold */
+            letter-spacing: 0.025em; /* Tailwind tracking-wide */
             color: white;
-            text-decoration: none;
-            margin: 0 8px;
-            font-size: 0.9rem;
         }
-        .davivienda-header-link.active {
-            font-weight: bold;
-            border-bottom: 2px solid white;
+
+        .davivienda-main-red-bar .nav-link {
+            color: white;
+            font-size: 0.875rem; /* Tailwind text-sm (aproximado para font-medium) */
+            font-weight: 500; /* Tailwind font-medium */
+            padding: 0.5rem 0.75rem; /* Tailwind px-3 py-2 */
+            border-radius: 0.375rem; /* Tailwind rounded */
         }
-        .btn-davivienda-login {
-            background-color: #fff;
-            color: #e3001b;
-            border: none;
-            font-weight: bold;
+        .davivienda-main-red-bar .nav-link:hover,
+        .davivienda-main-red-bar .nav-link.active { /* Active state para el link Personas */
+            background-color: rgba(255, 255, 255, 0.1); /* Tailwind bg-white/10 */
         }
-        .btn-davivienda-login:hover {
-            background-color: #f0f0f0;
-            color: #e3001b;
+        .davivienda-main-red-bar .nav-link svg {
+            width: 1rem; /* Tailwind w-4 */
+            height: 1rem; /* Tailwind h-4 */
+            margin-right: 0.5rem; /* Tailwind space-x-2 */
         }
-        .aqui-puedo-btn {
+
+        .davivienda-help-links {
+            font-size: 0.75rem; /* Tailwind text-xs */
+            color: white;
+        }
+        .davivienda-help-links div {
+            margin-bottom: 0.25rem; /* Tailwind space-y-1 */
+        }
+        .davivienda-help-links div:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .btn-davivienda-login-main {
+            background-color: #E31E24; /* Rojo Davivienda (para que coincida con screenshot) */
+            border: 1px solid white; /* Borde blanco para contraste */
+            color: white;
+            padding: 0.5rem 1rem; /* Tailwind px-4 py-2 */
+            border-radius: 0.375rem; /* Tailwind rounded */
+            font-size: 0.875rem; /* Tailwind text-sm */
+            font-weight: 500; /* Tailwind font-medium */
+        }
+        .btn-davivienda-login-main:hover {
+            background-color: #C41E24; /* davivienda.red-dark */
+            border-color: #f0f0f0;
+            color: white;
+        }
+        .btn-davivienda-login-main svg {
+            width: 1rem; /* Tailwind w-4 */
+            height: 1rem; /* Tailwind h-4 */
+            margin-right: 0.5rem; /* Tailwind space-x-2 */
+        }
+
+        /* Estilos para la barra "Aquí puedo" */
+        .davivienda-aqui-puedo-bar {
+            padding: 0.75rem 0; /* Tailwind py-[12px] */
+            border-bottom: 1px solid #e5e7eb; /* Borde ligero para separar del dropdown */
+        }
+        .btn-aqui-puedo {
+            font-weight: 500; /* Tailwind font-medium */
+            color: #4B5563; /* Tailwind text-gray-600 */
             background: none;
             border: none;
-            color: #333;
-            font-weight: bold;
-            font-size: 1.1rem;
         }
-        .aqui-puedo-quick-link img {
-            height: 28px; /* Ajuste de altura para iconos */
-            vertical-align: middle;
+        .btn-aqui-puedo:hover {
+            color: #1F2937; /* Tailwind hover:text-gray-800 */
         }
-        .aqui-puedo-quick-link span {
-            color: #333;
-            font-size: 0.9em;
-            vertical-align: middle;
+        .btn-aqui-puedo svg {
+            width: 1rem; /* Tailwind w-4 */
+            height: 1rem; /* Tailwind h-4 */
+            transition: transform 0.2s; /* Tailwind transition-transform */
         }
-        .aqui-puedo-menu h5 {
-            color: #e3001b;
-            font-size: 1rem; /* Ajuste de tamaño de títulos de menú */
+        .btn-aqui-puedo[aria-expanded="true"] svg {
+            transform: rotate(180deg); /* Tailwind rotate-180 */
+        }
+        .aqui-puedo-quick-links a {
+            font-size: 0.875rem; /* Tailwind text-sm */
+            color: #E31E24; /* Tailwind text-davivienda-red */
+            text-decoration: none;
+        }
+        .aqui-puedo-quick-links a:hover {
+            color: #C41E24; /* Tailwind hover:text-davivienda-red-dark */
+        }
+        .aqui-puedo-quick-links svg {
+            width: 1rem; /* Tailwind w-4 */
+            height: 1rem; /* Tailwind h-4 */
+            margin-right: 0.5rem; /* Tailwind space-x-2 */
+        }
+
+        /* Estilos para el Dropdown "Aquí puedo" */
+        #aquiPuedoDropdownTsx .dropdown-menu-content {
+             /* Tailwind p-6 */
+            border-top: 1px solid #e5e7eb; /* Tailwind border-t border-gray-200 */
+        }
+        #aquiPuedoDropdownTsx h5 {
+            color: #E31E24; /* Tailwind text-davivienda-red */
+            font-weight: 600; /* Tailwind font-semibold */
+            margin-bottom: 0.75rem; /* Tailwind mb-3 */
+            font-size: 1rem;
+        }
+        #aquiPuedoDropdownTsx h5 svg {
+            width: 1.25rem; /* Tailwind w-5 */
+            height: 1.25rem; /* Tailwind h-5 */
+            margin-right: 0.5rem; /* Tailwind space-x-2 */
+        }
+        #aquiPuedoDropdownTsx ul {
+            list-style: none;
+            padding-left: 0;
+            /* Tailwind space-y-2 */
+        }
+        #aquiPuedoDropdownTsx ul li {
             margin-bottom: 0.5rem;
         }
-        .aqui-puedo-menu ul {
-            padding-left: 0;
-            list-style: none;
-        }
-        .aqui-puedo-menu ul li a {
-            font-size: 0.85rem; /* Ajuste de tamaño de enlaces de menú */
-            color: #555;
-            text-decoration: none;
-            display: block;
-            padding: 0.2rem 0;
-        }
-        .aqui-puedo-menu ul li a:hover {
-            color: #e3001b;
-        }
-        .opciones-usuario-aqui-puedo a {
-            color: #e3001b;
-            font-size: 0.9rem;
+        #aquiPuedoDropdownTsx ul li a {
+            font-size: 0.875rem; /* Tailwind text-sm */
+            color: #4B5563; /* Tailwind text-gray-600 */
             text-decoration: none;
         }
-        .opciones-usuario-aqui-puedo a:hover {
-            text-decoration: underline;
+        #aquiPuedoDropdownTsx ul li a:hover {
+            color: #E31E24; /* Tailwind hover:text-davivienda-red */
         }
-        .opciones-usuario-aqui-puedo img { /* Asumiendo que los iconos <i> serán reemplazados por <img> o SVGs */
-            height: 20px;
-            margin-right: 5px;
+        #aquiPuedoDropdownTsx .bottom-links a {
+            font-size: 0.875rem; /* Tailwind text-sm */
+            color: #E31E24; /* Tailwind text-davivienda-red */
+            text-decoration: none;
         }
-
-        #side-navigation-dots {
-            position: fixed;
-            top: 50%;
-            right: 20px; /* Ajuste para que no esté pegado al borde */
-            transform: translateY(-50%);
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            z-index: 1000; /* Para que esté sobre otros elementos */
+        #aquiPuedoDropdownTsx .bottom-links a:hover {
+            color: #C41E24; /* Tailwind hover:text-davivienda-red-dark */
         }
-        #side-navigation-dots li a {
-            display: block;
-            width: 12px; /* Tamaño del punto */
-            height: 12px;
-            margin-bottom: 10px;
-            background-color: rgba(227, 0, 27, 0.5); /* Rojo Davivienda semi-transparente */
+        #aquiPuedoDropdownTsx .bottom-links svg,
+        #aquiPuedoDropdownTsx .bottom-links .icon-placeholder {
+            width: 1rem; /* Tailwind w-4 */
+            height: 1rem; /* Tailwind h-4 */
+            margin-right: 0.5rem; /* Tailwind space-x-2 */
+        }
+        #aquiPuedoDropdownTsx .icon-placeholder { /* Para los iconos de $ y avión */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
-            text-indent: -9999px; /* Ocultar texto si lo hubiera */
+            font-size: 0.75rem; /* Tailwind text-xs */
         }
-        #side-navigation-dots li a:hover,
-        #side-navigation-dots li a.active { /* Estilo para el punto activo o hover */
-            background-color: #e3001b; /* Rojo Davivienda opaco */
-        }
-        .section-hero img {
-            max-height: 400px; /* Limitar altura de imágenes de banner */
-            width: 100%;
-            object-fit: cover; /* Para que la imagen cubra el espacio sin distorsionarse */
-        }
-        .footer-davivienda {
-            background-color: #343a40; /* bg-dark de Bootstrap */
-        }
-        .footer-davivienda h5 {
-            color: #fff;
-        }
-        .footer-davivienda a, .footer-davivienda p {
-            color: #adb5bd; /* Color de texto suave para footer oscuro */
-            font-size: 0.9rem;
-        }
-        .footer-davivienda a:hover {
-            color: #fff;
-        }
-        /* Iconos del header (simulados con texto, idealmente serían SVGs o fuente de iconos) */
-        .icono { font-style: normal; margin-right: 5px; }
-        .icono.personas::before { content: ""; } /* Ejemplo */
-        .icono.empresas::before { content: ""; } /* Ejemplo */
-        .icono.casa::before { content: "🏠"; margin-right: 8px; }
-        .icono.dinero::before { content: "💰"; margin-right: 8px; }
-        .icono.compra::before { content: "🛍️"; margin-right: 8px; }
-        .icono.tarjeta::before { content: "💳"; margin-right: 8px; }
-        .icono.familia::before { content: "👨‍👩‍👧‍👦"; margin-right: 8px; }
-        .icono.grafico::before { content: "📊"; margin-right: 8px; }
-        .icono.proteger::before { content: "🛡️"; margin-right: 8px; }
-        .icono.pagar::before { content: "💸"; margin-right: 8px; }
+        #aquiPuedoDropdownTsx .icon-placeholder.bg-yellow { background-color: #FBBF24; color: #92400E; } /* Amarillo con texto oscuro */
+        #aquiPuedoDropdownTsx .icon-placeholder.bg-red { background-color: #EF4444; color: white; } /* Rojo con texto blanco */
+        #aquiPuedoDropdownTsx .icon-placeholder.bg-green { background-color: #10B981; color: white; } /* Verde con texto blanco */
 
-        /* Para que el contenido principal no quede oculto bajo el header fijo */
-        body {
-             padding-top: 100px; /* Ajustar este valor según la altura final del header */
-        }
-        header.fixed-top + main {
-            padding-top: 120px; /* Ajustar este valor según la altura del header */
-        }
+        /* === FIN NUEVOS ESTILOS HEADER === */
 
+        /* Estilos generales (del template anterior, pueden necesitar ajustes) */
+        .davivienda-red-text { color: #e3001b; }
+        #side-navigation-dots { position: fixed; top: 50%; right: 20px; transform: translateY(-50%); list-style: none; padding: 0; margin: 0; z-index: 1000; }
+        #side-navigation-dots li a { display: block; width: 12px; height: 12px; margin-bottom: 10px; background-color: rgba(227, 0, 27, 0.5); border-radius: 50%; text-indent: -9999px; }
+        #side-navigation-dots li a:hover, #side-navigation-dots li a.active { background-color: #e3001b; }
+        .section-hero img { max-height: 400px; width: 100%; object-fit: cover; }
+        .footer-davivienda { background-color: #343a40; }
+        .footer-davivienda h5 { color: #fff; }
+        .footer-davivienda a, .footer-davivienda p { color: #adb5bd; font-size: 0.9rem; }
+        .footer-davivienda a:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-    <header class="davivienda-red-bg text-white py-2 fixed-top shadow-sm">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-auto">
-                    <a href="#" title="Volver a Home personas">
-                        <img src="imagenes/logo-davivienda-blanco.png" alt="Davivienda" style="height: 35px;" class="img-fluid">
+    <header class="fixed-top shadow-lg">
+        <div class="davivienda-main-red-bar davivienda-red-bg">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between"> 
+                    <a href="#" title="Volver a Home personas" class="davivienda-logo text-decoration-none d-flex align-items-center">
+                        <span class="logo-icon-circle">D</span>
+                        <span class="logo-text">DAVIVIENDA</span>
                     </a>
-                </div>
-                <div class="col-md-auto ms-auto">
-                    <nav class="d-inline-block me-lg-3">
-                        <a href="#" class="davivienda-header-link active"><i class="icono personas"></i>Personas</a>
-                        <a href="#" class="davivienda-header-link"><i class="icono empresas"></i>Empresas</a>
-                    </nav>
-                    <a href="/login" class="btn btn-davivienda-login btn-sm px-3 py-2" role="button">Ingreso Clientes</a>
+
+                    <div class="d-none d-md-flex align-items-center"> 
+                        <nav class="d-flex align-items-center me-4"> 
+                            <a href="#" class="nav-link active d-flex align-items-center">
+                                <i class="icono personas"></i>Personas
+                            </a>
+                            <a href="#" class="nav-link d-flex align-items-center">
+                                <i class="icono empresas"></i>Empresas
+                            </a>
+                        </nav>
+
+                        <div class="davivienda-help-links d-none d-lg-block text-start me-4">
+                            <div>▶ ¿Quiénes somos?</div>
+                            <div>▶ Información para inversionistas</div>
+                            <div>▶ Información adicional</div>
+                        </div>
+
+                        <a href="/login" class="btn btn-davivienda-login-main d-flex align-items-center" role="button">
+                            
+                            <span>INGRESO<br class="d-none d-md-block"> CLIENTES</span>
+                        </a>
+                    </div>
+                    <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#aquiPuedoDropdownTsx" aria-controls="aquiPuedoDropdownTsx" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <div class="aqui-puedo-container davivienda-light-gray-bg mt-2 p-3 rounded">
-                 <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <button class="aqui-puedo-btn" type="button" data-bs-toggle="collapse" data-bs-target="#aquiPuedoMenuCollapse" aria-expanded="false" aria-controls="aquiPuedoMenuCollapse">
-                         <span class="dropdown-arrow"><img src="imagenes/btn_aqui_puedo_Inactivo.png">&#9660;</span>
-                        </button>
-                    </div>
-                    <div class="col-md-9 d-none d-md-flex justify-content-end align-items-center">
-                        <a href="#" class="aqui-puedo-quick-link me-3 text-decoration-none">
-                            <img loading="lazy" src="imagenes/iconos/abrir-productos-linea.png" alt="Abrir Productos en línea">
-                            <span>Abrir Productos en línea</span>
-                        </a>
-                        <a href="#" class="aqui-puedo-quick-link me-3 text-decoration-none">
-                            <img loading="lazy" src="imagenes/iconos/ICO_PAGOS_EN_LINEA_PSE.png" alt="Pagos en línea y PSE">
-                            <span>Pagos en línea y PSE</span>
-                        </a>
-                        <a href="#" class="aqui-puedo-quick-link text-decoration-none">
-                            <img loading="lazy" src="imagenes/iconos/empresas.png" alt="Visitar una oficina">
-                            <span>Visitar una oficina</span>
-                        </a>
-                    </div>
+        <div class="davivienda-aqui-puedo-bar davivienda-light-gray-bg">
+            <div class="container d-flex align-items-center justify-content-between py-2">
+                <button class="btn-aqui-puedo d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#aquiPuedoDropdownTsx" aria-expanded="false" aria-controls="aquiPuedoDropdownTsx">
+                    <span>Aquí puedo</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down ms-2" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>
+                </button>
+
+                <div class="aqui-puedo-quick-links d-none d-md-flex align-items-center">
+                    <a href="#" class="d-flex align-items-center me-4"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+                        <span>Abrir Productos en línea</span>
+                    </a>
+                    <a href="#" class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/><path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/></svg>
+                        <span>Pagos en línea y PSE</span>
+                    </a>
                 </div>
+            </div>
+        </div>
 
-                <nav class="collapse" id="aquiPuedoMenuCollapse">
-                    <div class="aqui-puedo-menu mt-3 bg-white p-3 p-lg-4 rounded shadow-sm">
-                        <div class="row">
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono casa"></i>Construir mi futuro</h5>
-                                <ul>
-                                    <li><a href="#">Vivienda</a></li>
-                                    <li><a href="#">Vehículo</a></li>
-                                    <li><a href="#">Inversiones</a></li>
-                                    <li><a href="#">Nómina y Pensión</a></li>
-                                    <li><a href="#">Educación</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono dinero"></i>Manejar mi dinero</h5>
-                                <ul>
-                                    <li><a href="#">Portafolio de Servicios</a></li>
-                                    <li><a href="#">Cuentas Transaccionales</a></li>
-                                    <li><a href="#">Tarjetas Débito</a></li>
-                                    <li><a href="#">Giros Internacionales</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono compra"></i>Alcanzar lo que quiero</h5>
-                                <ul>
-                                    <li><a href="#">Créditos de Libre Inversión</a></li>
-                                    <li><a href="#">Créditos Libranza</a></li>
-                                    <li><a href="#">Compra de Cartera</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono tarjeta"></i>Comprar lo que deseo</h5>
-                                <ul>
-                                    <li><a href="#">Tarjeta de Crédito</a></li>
-                                    <li><a href="#">Mundo Diners Club</a></li>
-                                    <li><a href="#">Davipuntos</a></li>
-                                    <li><a href="#">Compras Virtuales</a></li>
-                                </ul>
-                            </div>
+        <div class="collapse" id="aquiPuedoDropdownTsx">
+            <div class="dropdown-menu-content bg-white">
+                <div class="container p-4"> 
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>
+                                Construir mi futuro
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Vivienda</a></li>
+                                <li><a href="#">▶ Vehículo</a></li>
+                                <li><a href="#">▶ Inversiones</a></li>
+                                <li><a href="#">▶ Pensión</a></li>
+                                <li><a href="#">▶ Educación</a></li>
+                                <li><a href="#">▶ Ahorros</a></li>
+                                <li><a href="#">▶ Mi comercio</a></li>
+                                <li><a href="#">▶ Vender con código QR</a></li>
+                            </ul>
                         </div>
-                         <div class="row mt-lg-3">
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono familia"></i>Respaldar a mi familia</h5>
-                                <ul>
-                                    <li><a href="#">Portafolio Familia</a></li>
-                                    <li><a href="#">Tarjetas Amparadas</a></li>
-                                    <li><a href="#">Cuenta Niños</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono grafico"></i>Administrar mis inversiones</h5>
-                                <ul>
-                                    <li><a href="#">Davivienda Panamá</a></li>
-                                    <li><a href="#">Davivienda Miami</a></li>
-                                    <li><a href="#">Davivienda Corredores</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono proteger"></i>Proteger mi patrimonio</h5>
-                                <ul>
-                                    <li><a href="#">Seguros para Familia</a></li>
-                                    <li><a href="#">Seguros para Bienes</a></li>
-                                    <li><a href="#">Seguros para Casa</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
-                                <h5><i class="icono pagar"></i>Pagar fácilmente</h5>
-                                <ul>
-                                    <li><a href="#">Mis Pagos Automáticos</a></li>
-                                    <li><a href="#">Pagos en Línea y PSE</a></li>
-                                    <li><a href="#">Comprar con Código QR</a></li>
-                                </ul>
-                            </div>
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16"><path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.458 3.678-3.219 0-1.753-.931-2.81-2.516-3.248l-.08-.018c-.784-.145-1.255-.352-1.255-.776 0-.42.347-.646.945-.646.596 0 .928.202.988.615h1.053c-.076-.748-.658-1.32-1.96-1.32-.998 0-1.63.47-1.63 1.213 0 .703.532.968 1.634 1.195l.096.022c.86.196 1.358.408 1.358.919 0 .563-.505.927-1.281.927-.818 0-1.247-.411-1.281-.904H4zm9.5-7.122c.093.093.16.192.216.298A3 3 0 1 1 11.25.752v1.269c.123-.08.255-.151.394-.216.093-.046.19-.085.289-.119.14-.05.285-.09.433-.12.136-.027.277-.043.419-.05.13-.006.26-.006.388 0 .133.006.263.016.39.03.133.014.263.035.388.063.122.027.244.062.36.103.11.038.22.083.324.135.104.052.204.11.3.175.093.062.187.13.27.202C15.706 4.21 16 5.315 16 6.5 16 7.818 15.625 9.007 15 9.995c-.21.34-.46.656-.736.94-.09.093-.184.181-.28.265l-.001.001c-.096.084-.194.162-.295.236a4.5 4.5 0 0 1-4.088 1.003c-.31-.09-.608-.206-.89-.344l-.002-.001c-.28-.137-.547-.294-.796-.465a4.5 4.5 0 0 1-1.04-4.088c.09-.31.206-.608.344-.89l.001-.002c.137-.28.294-.547.465-.796a4.5 4.5 0 0 1 4.088-1.04c.31.09.608.206.89.344l.002.001c.28.137.547.294.796.465ZM12.5 6.5a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 12.5 6.5"/></svg>
+                                Manejar mi dinero
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Portafolio Banca Personal</a></li>
+                                <li><a href="#">▶ Cuentas Transaccionales</a></li>
+                                <li><a href="#">▶ Planificación de Impuestos</a></li>
+                                <li><a href="#">▶ Tarjetas Débito</a></li>
+                                <li><a href="#">▶ Giros Internacionales</a></li>
+                                <li><a href="#">▶ Multitransferencias</a></li>
+                            </ul>
                         </div>
-
-                        <div class="opciones-usuario-aqui-puedo mt-4 text-center">
-                            <ul class="list-inline">
-                                <li class="list-inline-item mx-lg-3"><a href="#"><img src="imagenes/iconos/ico-conocer.png" alt="Icono Conocer DaviPlata"> Conocer DaviPlata</a></li>
-                                <li class="list-inline-item mx-lg-3"><a href="#"><img src="imagenes/iconos/ico-aprender.png" alt="Icono Educación Financiera"> Educación Financiera</a></li>
-                                <li class="list-inline-item mx-lg-3"><a href="#"><img src="imagenes/iconos/ico-asesorame.png" alt="Icono Asesorarme"> Asesorarme si vivo o viajo al exterior</a></li>
-                                <li class="list-inline-item mx-lg-3"><a href="#"><img src="imagenes/iconos/ico-aprender.png" alt="Icono Defensor"> Defensor del consumidor</a></li>
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"/></svg>
+                                Alcanzar lo que quiero
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Créditos de Libre Inversión</a></li>
+                                <li><a href="#">▶ Crédito Descontado de Nómina</a></li>
+                                <li><a href="#">▶ Crédito Compra de Cartera</a></li>
+                                <li><a href="#">▶ Crédito Zuora</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-credit-card-2-front-fill" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM2 10.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zM5 10.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm3 0a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm3 0a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5z"/></svg>
+                                Comprar lo que deseo
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Tarjeta de Crédito</a></li>
+                                <li><a href="#">▶ Mundo Diners</a></li>
+                                <li><a href="#">▶ Tarjetas Prepago y Ecard</a></li>
+                                <li><a href="#">▶ Davipuntos</a></li>
+                                <li><a href="#">▶ Asistencias y Beneficios</a></li>
+                                <li><a href="#">▶ Compras Virtuales</a></li>
+                                <li><a href="#">▶ Compras Davivienda</a></li>
                             </ul>
                         </div>
                     </div>
-                </nav>
+                    <div class="row mt-md-4"> 
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1A.26.26 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.27.27 0 0 1-.276.246H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216A2.3 2.3 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/></svg>
+                                Respaldar a mi familia
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Portafolio Familia</a></li>
+                                <li><a href="#">▶ Tarjetas Amparadas</a></li>
+                                <li><a href="#">▶ Cuenta Niños</a></li>
+                                <li><a href="#">▶ Tarjeta Mujer</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16"><path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm-1 8.5a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0-.5.5zm-3-6.5A.5.5 0 0 0 7.5 5h2a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0-.5.5zm-3 3A.5.5 0 0 0 4.5 8h2a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0-.5.5z"/></svg>
+                                Administrar mis inversiones
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Davivienda Panamá</a></li>
+                                <li><a href="#">▶ Davivienda Miami</a></li>
+                                <li><a href="#">▶ Davivienda Corredores</a></li>
+                                <li><a href="#">▶ Corredores Asociados Panamá</a></li>
+                                <li><a href="#">▶ Davivienda Advisors</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shield-lock-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0c-.086 0-.166.003-.243.009l-.005.004l-.012.009l-.024.019l-.04.035l-.053.05l-.07.071l-.07.084c-.092.115-.191.242-.29.382l-.003.005c-.098.138-.2.28-.303.428l-.01.012c-.104.15-.21.305-.316.466l-.012.017c-.108.166-.217.335-.326.508l-.013.02c-.11.177-.22.357-.327.541l-.013.022c-.106.18-.21.362-.313.545l-.013.023c-.102.18-.202.358-.3.535l-.013.025c-.098.177-.193.352-.285.525l-.013.025c-.092.173-.183.345-.27.516l-.013.026c-.088.17-.173.338-.257.504l-.013.026c-.083.165-.164.328-.24.49l-.013.027c-.075.16-.148.318-.217.474l-.013.027c-.068.155-.133.308-.194.459l-.012.028c-.06.148-.117.293-.17.435l-.012.028c-.05.138-.098.274-.14.408l-.012.029c-.04.13-.077.258-.11.384l-.01.03c-.032.125-.06.248-.084.37l-.01.03C1.01 10.717 1 10.86 1 11.006v2.089c0 .562.075.992.22 1.336A4.2 4.2 0 0 0 3.081 16l.013-.001c.044.002.088.004.132.004h8.548c.044 0 .088-.002.132-.004l.013.001c.96-.229 1.657-.86 1.861-1.573c.144-.344.22-.774.22-1.336V11.01c0-.146-.01-.29-.023-.43l-.01-.03c-.025-.122-.052-.245-.084-.37l-.01-.03c-.033-.126-.07-.254-.11-.384l-.012-.029c-.042-.134-.09-.27-.14-.408l-.012-.028c-.053-.142-.11-.287-.17-.435l-.012-.028c-.06-.15-.125-.302-.194-.459l-.013-.027c-.068-.156-.142-.314-.217-.474l-.013-.027c-.076-.162-.157-.325-.24-.49l-.013-.027c-.084-.166-.169-.335-.257-.504l-.013-.026c-.087-.17-.178-.342-.27-.516l-.013-.026c-.092-.172-.187-.347-.285-.525l-.013-.025c-.098-.177-.198-.355-.3-.535l-.013-.023c-.102-.182-.207-.364-.313-.545l-.013-.022c-.107-.184-.216-.364-.327-.541l-.013-.02c-.109-.173-.218-.342-.326-.508l-.012-.017c-.106-.16-.212-.315-.316-.466l-.01-.012c-.102-.148-.205-.29-.303-.428l-.003-.005c-.099-.14-.198-.267-.29-.382l-.07-.084-.07-.072l-.054-.049l-.04-.035l-.024-.019l-.012-.009L8.243.01A2 2 0 0 0 8 0m0 11.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M9 6.5a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v2.5a1 1 0 0 1-1 1"/></svg>
+                                Proteger mi patrimonio
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Seguros para Familia</a></li>
+                                <li><a href="#">▶ Seguros para Bienes</a></li>
+                                <li><a href="#">▶ Seguros para Casa</a></li>
+                                <li><a href="#">▶ Seguros para Carro</a></li>
+                                <li><a href="#">▶ Asistencias</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3 mb-4">
+                            <h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightning-charge-fill" viewBox="0 0 16 16"><path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 7.5H13.5a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H2.5a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/></svg>
+                                Pagar fácilmente
+                            </h5>
+                            <ul>
+                                <li><a href="#">▶ Mis Pagos Automáticos</a></li>
+                                <li><a href="#">▶ Pagos en Línea y PSE</a></li>
+                                <li><a href="#">▶ Servicios de Información y Pagos</a></li>
+                                <li><a href="#">▶ Transferencias Automáticas</a></li>
+                                <li><a href="#">▶ Comprar con Código QR</a></li>
+                                <li><a href="#">▶ Apple Pay</a></li>
+                                <li><a href="#">▶ Google Pay</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bottom-links d-flex flex-wrap justify-content-center gap-3 mt-4 pt-4 border-top"> 
+                        <a href="#" class="d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone-fill" viewBox="0 0 16 16"><path d="M3 2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 11a1 1 0 1 0-2 0 1 1 0 0 0 2 0"/></svg>
+                            <span>Conocer DaviPlata</span>
+                        </a>
+                        <a href="#" class="d-flex align-items-center">
+                            <span class="icon-placeholder bg-yellow">$</span>
+                            <span>Educación Financiera</span>
+                        </a>
+                        <a href="#" class="d-flex align-items-center">
+                            <span class="icon-placeholder bg-red">✈</span>
+                            <span>Asesorarme si vivo o viajo al exterior</span>
+                        </a>
+                        <a href="#" class="d-flex align-items-center">
+                             <span class="icon-placeholder bg-green">$</span>
+                            <span>Defensor del consumidor financiero</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
-
     <aside>
         <ul id="side-navigation-dots">
             <li><a href="#bienvenido" title="Bienvenido" class="active">B</a></li>
@@ -292,7 +419,7 @@
         </ul>
     </aside>
 
-    <main class="container mt-5 pt-5">
+    <main class="container mt-4">
         <section id="bienvenido" class="text-center py-5">
             <h2 class="davivienda-red-text mb-4">Bienvenido a Davivienda</h2>
             <div class="section-hero mb-3">
@@ -382,42 +509,38 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        // Script para activar los puntos de navegación lateral según el scroll (opcional)
-        // Esto es una implementación básica. Para un efecto más robusto, se podría usar Intersection Observer API.
         document.addEventListener('DOMContentLoaded', function () {
             const sections = document.querySelectorAll('main section[id]');
             const navLinks = document.querySelectorAll('#side-navigation-dots a');
+            // Ajuste del headerOffset a la nueva altura del header (aprox. 110px)
+            const headerOffset = 110;
 
             function changeNav() {
                 let index = sections.length;
-
-                while(--index && window.scrollY + 50 < sections[index].offsetTop) {}
+                // Ajuste en la condición del bucle para considerar el headerOffset
+                while(--index >= 0 && window.scrollY + headerOffset < sections[index].offsetTop + 50 ) {} // +50 para activar un poco antes
                 
                 navLinks.forEach((link) => link.classList.remove('active'));
-                // Asegurarse de que el índice es válido antes de añadir la clase active
-                if (navLinks[index]) {
+                if (navLinks[index]) { // Asegurarse de que el índice es válido
                      navLinks[index].classList.add('active');
+                } else if (navLinks.length > 0 && window.scrollY < sections[0].offsetTop - headerOffset - 50) {
+                    // Si estamos por encima de la primera sección, activar el primer link
+                     navLinks[0].classList.add('active');
                 }
             }
-
-            // Inicializar al cargar y al hacer scroll
-            changeNav();
+            changeNav(); // Llamada inicial
             window.addEventListener('scroll', changeNav);
 
-            // Smooth scroll para los enlaces de anclaje de la navegación lateral
             navLinks.forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        // Ajuste para la altura del header fijo
-                        const headerOffset = 120; // Debe coincidir con el padding-top del main o body
                         const elementPosition = targetElement.getBoundingClientRect().top;
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            
                         window.scrollTo({
                             top: offsetPosition,
                             behavior: "smooth"
@@ -425,6 +548,22 @@
                     }
                 });
             });
+
+            // Funcionalidad para el botón "Aquí puedo" (si no se usa navbar-toggler para ello)
+            // Bootstrap maneja el colapso con data-bs-toggle y data-bs-target,
+            // pero si se necesita lógica adicional, se puede añadir aquí.
+            // Por ejemplo, para cambiar la flecha del botón "Aquí puedo":
+            const aquiPuedoButton = document.querySelector('.btn-aqui-puedo');
+            const aquiPuedoDropdown = document.getElementById('aquiPuedoDropdownTsx');
+
+            if (aquiPuedoButton && aquiPuedoDropdown) {
+                aquiPuedoDropdown.addEventListener('show.bs.collapse', function () {
+                    aquiPuedoButton.setAttribute('aria-expanded', 'true');
+                });
+                aquiPuedoDropdown.addEventListener('hide.bs.collapse', function () {
+                    aquiPuedoButton.setAttribute('aria-expanded', 'false');
+                });
+            }
         });
     </script>
 </body>
