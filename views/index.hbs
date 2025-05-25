@@ -15,7 +15,7 @@
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 0; /* Eliminamos el padding-top anterior del body */
-            overflow-y: visible; /* Permitir scroll vertical */
+            overflow-y: hidden; /* Permitir scroll vertical */
         }
 
         /* === FIN ESTILOS GLOBALES Y SCROLL === */
@@ -119,69 +119,110 @@
 
         /* === INICIO NUEVOS ESTILOS PARA SECCIONES FULL-SCREEN === */
 
-        /* Contenedor principal para el efecto de scroll-snap */
-        /* El header es fixed, por lo que el main debe empezar debajo de él */
-        div#fullpage-main-content {
-            scroll-snap-type: y mandatory; /* Fuerza el snap vertical */
-            scroll-behavior: smooth; /* Habilita el scroll suave */
-            height: 100vh; /* El main ocupa toda la altura de la ventana */
-            box-sizing: border-box; /* Asegura que el padding no aumente la altura total */
-        }
+        /* Requirement 1 & 3: Scroll-snap implementation */
+    .scroll-snap-container {
+        scroll-snap-type: y mandatory; /* Enable vertical scroll snapping */
+        scroll-behavior: smooth; /* Smooth scrolling transitions */
+        height: 100vh;
+        overflow-y: auto;
+        /* Account for fixed header height */
+        padding-top: 110px;
+        margin-top: -110px;
+    }
 
-        .full-screen-section {
-            /* Cada sección ocupa la altura de la ventana menos la altura del header */
-            /* Esto es crucial porque el main tiene padding-top */
-            height: calc(100vh - 110px);  /*110px es el padding-top del main */
-            width: 100%;
-            scroll-snap-align: start; /* Cada sección es un punto de snap */
-            position: relative; /* Para posicionar el contenido interno absolutamente si es necesario */
-            overflow: hidden; /* Para evitar barras de scroll dentro de la sección si el contenido es muy grande */
-            display: flex; /* Usamos flex para centrar el contenido */
-            /* align-items: center; Ya no se centra globalmente, se maneja por .section-content-wrapper */
-            /* justify-content: flex-start; Ya no se centra globalmente */
-            background-size: cover; /* La imagen de fondo cubre toda la sección */
-            background-position: center center; /* Centra la imagen de fondo */
-            background-repeat: no-repeat;
-        }
+    /* Requirement 1: Each section with scroll-snap-align and minimum 100vh height */
+    .snap-section {
+        scroll-snap-align: start; /* Enable scroll snapping for each section */
+        min-height: 100vh; /* Ensure full-screen visibility */
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
 
-        /* Contenedor para el contenido textual de cada sección */
-        .section-content-wrapper {
-            position: relative; /* Para z-index si es necesario sobre el fondo */
-            z-index: 2;
-            color: white; /* Color de texto por defecto para contraste con imágenes de fondo */
-            padding: 2rem 3rem; /* Margen izquierdo y padding general (Bootstrap p-lg-5) */
-            max-width: 50%; /* Limita el ancho del contenido textual */
-            /* Alineación vertical al centro y horizontal a la izquierda */
-            margin-top: auto; /* Empuja hacia abajo */
-            margin-bottom: auto; /* Empuja hacia arriba */
-            margin-left: 5%; /* Margen izquierdo solicitado */
-        }
+    /* Requirement 1: Background colors matching Davivienda brand */
+    .text-davivienda {
+        color: #E31E24 !important; /* Davivienda red */
+    }
 
-        .section-content-wrapper h2 {
-            font-size: 2.5rem; /* Tamaño de título */
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Sombra para legibilidad */
-        }
-        .section-content-wrapper p.lead {
-            font-size: 1.25rem; /* Tamaño de texto lead */
-            margin-bottom: 1.5rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-        .section-content-wrapper .a{
-            font-size: 1rem;
-            padding: 0.75rem 1.5rem;
-        }
+    .btn-davivienda {
+        background-color: #E31E24; /* Davivienda red background */
+        border-color: #E31E24;
+        color: white; /* White text */
+        transition: all 0.3s ease;
+    }
 
-        /* Estilos específicos para cada sección (imágenes de fondo) */
-        #bienvenido {
-            background-image: url('imagenes/IMG-DESK-TIA-SEGURA.jpg');
-        }
-        #app-davivienda {
-            background-image: url('imagenes/entrega+publicacion+-escritorio.jpg');
-        }
-        #seguridad {
-            background-image: url('imagenes/240429-BANNER-DAV-V1+(1).jpg');
-        }
+    .btn-davivienda:hover {
+        background-color: #C41E24; /* Darker red on hover */
+        border-color: #C41E24;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(227, 30, 36, 0.3);
+    }
+
+    /* Requirement 1: Red/white gradient for hero section */
+    .bg-gradient-davivienda {
+        background: linear-gradient(135deg, #E31E24 0%, #FF6B6B 50%, #FFFFFF 100%);
+    }
+
+    /* Requirement 5: Content wrapper for text alignment */
+    .content-wrapper {
+        max-width: 600px;
+        padding: 2rem;
+    }
+
+    /* Requirement 6: Three-dot navigation enhancement */
+    #side-navigation-dots {
+        position: fixed;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        z-index: 1031;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 25px;
+        padding: 15px 8px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #side-navigation-dots li a {
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin-bottom: 15px;
+        background-color: rgba(227, 30, 36, 0.3);
+        border-radius: 50%;
+        text-indent: -9999px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    #side-navigation-dots li:last-child a {
+        margin-bottom: 0;
+    }
+
+    /* Requirement 6: Active state for navigation dots */
+    #side-navigation-dots li a:hover,
+    #side-navigation-dots li a.active {
+        background-color: #E31E24;
+        border-color: #E31E24;
+        transform: scale(1.2);
+        box-shadow: 0 2px 8px rgba(227, 30, 36, 0.4);
+    }
+
+    /* Smooth scroll enhancement for better browser compatibility */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Focus states for accessibility */
+    .btn-davivienda:focus,
+    #side-navigation-dots li a:focus {
+        outline: 3px solid rgba(227, 30, 36, 0.5);
+        outline-offset: 2px;
+    }
         /* === FIN NUEVOS ESTILOS PARA SECCIONES FULL-SCREEN === */
 
         /* Estilos navegación lateral (sin cambios mayores) */
@@ -314,87 +355,192 @@
         </ul>
     </aside>
 <main>
-    
-    <div id="fullpage-main-content">
-        <section id="bienvenido" class="text-center">
-            <h2 class="davivienda-red-text mb-4 section-content-wrapper">Bienvenido a Davivienda</h2>
-            <div class="full-screen-section">
-                <img src="imagenes/IMG-DESK-TIA-SEGURA.jpg" alt="Imagen de bienvenida con La Tía Segura de Davivienda" class="full-screen-section">
+    <!-- Requirement 1 & 3: Overall Page Structure with Scroll-Snapping Sections -->
+    <!-- scroll-snap-type: y mandatory applied to enable vertical scroll snapping -->
+    <div id="fullpage-main-content" class="scroll-snap-container">
+        
+        <!-- Section 1: Promotional Section (Debit Mastercard offer) -->
+        <!-- MODIFIED: Added background image from imagenes/IMG-DESK-TIA-SEGURA.jpg -->
+        <!-- Requirement 1: Each section uses scroll-snap-align: start -->
+        <!-- Requirement 1: Minimum height of 100vh for full-screen visibility -->
+        <section id="bienvenido" class="full-screen-section snap-section" style="background-image: url('imagenes/IMG-DESK-TIA-SEGURA.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Requirement 5: Text and Button Alignment - vertically centered and left-aligned -->
+                    <div class="col-12 col-lg-6 d-flex align-items-center">
+                        <div class="content-wrapper ps-lg-5">
+                            <h2 class="display-4 fw-bold text-white mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
+                                Bienvenido a <span class="text-warning">Davivienda</span>
+                            </h2>
+                            <p class="lead fs-3 text-white mb-3" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">
+                                Participe por premios usando su
+                            </p>
+                            <p class="lead fs-3 fw-semibold text-white mb-4" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">
+                                Tarjeta Débito Mastercard
+                            </p>
+                            <!-- Requirement 5: Consistent button styling (red background, white text) -->
+                            <a href="#" class="btn btn-davivienda btn-lg px-5 py-3 fw-semibold">
+                                Conozca más aquí
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6"></div>
+                </div>
             </div>
-            <p class="lead section-content-wrapper">Participe por premios usando su</p>
-            <p class="lead section-content-wrapper">Tarjeta Débito Mastercard</p>
-            <a href="#" class="btn davivienda-red-bg text-white px-4 section-content-wrapper">Conozca más aquí</a>
         </section>
 
-        <section id="app-davivienda" class="text-center py-5 bg-light">
-            <h2 class="davivienda-red-text mb-4 section-content-wrapper">App Davivienda</h2>
-            <div class="section-hero">
-                <img src="imagenes/entrega+publicacion+-escritorio.jpg" alt="Banner App Davivienda" >
+        <!-- Section 2: Hero Section (red/white gradient with app promotion) -->
+        <!-- MODIFIED: Added background image from imagenes/entrega+publicacion+-escritorio.jpg -->
+        <!-- Requirement 1: Background colors matching Davivienda brand -->
+        <section id="app-davivienda" class="full-screen-section snap-section" style="background-image: url('imagenes/entrega+publicacion+-escritorio.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Requirement 5: Text and buttons vertically centered and left-aligned -->
+                    <div class="col-12 col-lg-6 d-flex align-items-center">
+                        <div class="content-wrapper ps-lg-5">
+                            <h2 class="display-4 fw-bold text-white mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                                App <span class="text-warning">Davivienda</span>
+                            </h2>
+                            <p class="lead fs-3 text-white mb-4" style="line-height: 1.4; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">
+                                En la App Davivienda todo es más fácil y sin salir de la App.
+                            </p>
+                            <!-- Requirement 5: Consistent button styling -->
+                            <a href="#" class="btn btn-light btn-lg px-5 py-3 fw-semibold text-davivienda">
+                                Inscribáse ya
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6"></div>
+                </div>
             </div>
-            <p class="lead section-content-wrapper">En la App Davivienda todo es más fácil y sin salir de la App.</p>
-            <a href="#" class="btn davivienda-red-bg text-white px-4 section-content-wrapper">Conozca más aquí</a>
         </section>
 
-        <section id="seguridad" class="text-center py-5">
-            <h2 class="davivienda-red-text mb-4 section-content-wrapper">Seguridad Davivienda</h2>
-            <div class="section-hero mb-3">
-                <img src="imagenes/240429-BANNER-DAV-V1+(1).jpg" alt="Banner Seguridad Davivienda" >
+        <!-- Section 3: Security Section (image of person with "Tía Segura" graphic) -->
+        <!-- MODIFIED: Added background image from imagenes/240429-BANNER-DAV-V1+(1).jpg -->
+        <section id="seguridad" class="full-screen-section snap-section bg-light" style="background-image: url('imagenes/240429-BANNER-DAV-V1+(1).jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <!-- Requirement 5: Text and button alignment -->
+                    <div class="col-12 col-lg-6 d-flex align-items-center">
+                        <div class="content-wrapper ps-lg-5">
+                            <h2 class="display-4 fw-bold text-white mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                                Seguridad <span class="text-warning">Davivienda</span>
+                            </h2>
+                            <p class="lead fs-3 text-white mb-4" style="line-height: 1.4; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">
+                                Le tenemos los tips para que no lo engañen
+                            </p>
+                            <!-- Requirement 5: Consistent button styling -->
+                            <a href="#" class="btn btn-davivienda btn-lg px-5 py-3 fw-semibold">
+                                Conozca más aquí
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6"></div>
+                </div>
             </div>
-            <p class="lead section-content-wrapper">Le tenemos los tips para que no lo engañen</p>
-            <a href="#" class="btn davivienda-red-bg text-white px-4 section-content-wrapper" >Conozca más aquí</a>
         </section>
     </div>
-        
 </main>
 
-    <footer class="footer-davivienda text-white pt-5 pb-4 mt-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Productos y Servicios</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Cuentas</a></li>
-                        <li><a href="#">Tarjetas de Crédito</a></li>
-                        <li><a href="#">Créditos</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Acerca de Davivienda</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Quiénes Somos</a></li>
-                        <li><a href="#">Sostenibilidad</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Ayuda y Soporte</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Preguntas Frecuentes</a></li>
-                        <li><a href="#">Seguridad</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Síganos</h5>
-                    <div>
-                        <a href="#" class="me-2">Facebook</a>
-                        <a href="#" class="me-2">Twitter</a>
-                        <a href="#">Instagram</a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center pt-3 mt-3 border-top border-secondary-subtle">
-                <p><small>&copy; 2024 Davivienda. Todos los derechos reservados.</small></p>
-                <p><small><a href="#">Términos y Condiciones</a> | <a href="#">Política de Privacidad</a></small></p>
-            </div>
-        </div>
-    </footer>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const sections = document.querySelectorAll('main section[id]');
+            const sections = document.querySelectorAll('.snap-section[id]');
             const navLinks = document.querySelectorAll('#side-navigation-dots a');
-            // Ajuste del headerOffset a la nueva altura del header (aprox. 110px)
-            const headerOffset = 110;
+            const headerOffset = 110; // Fixed header offset
+
+    // Requirement 6: Three-dot navigation with active state management
+    function updateActiveNavigation() {
+        let index = sections.length;
+        const scrollPosition = window.scrollY + headerOffset;
+        
+        // Find the current section in view
+        while(--index >= 0 && scrollPosition < sections[index].offsetTop + 50) {}
+        
+        // Update active states
+        navLinks.forEach((link) => link.classList.remove('active'));
+        if (navLinks[index]) {
+            navLinks[index].classList.add('active');
+        } else if (navLinks.length > 0 && window.scrollY < sections[0].offsetTop - headerOffset - 50) {
+            navLinks[0].classList.add('active');
+        }
+    }
+
+    // Initialize and listen for scroll events
+    updateActiveNavigation();
+    
+    // Requirement 3: Smooth scrolling with throttling for performance
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(updateActiveNavigation, 10);
+    });
+
+    // Requirement 6: Navigation dot click handlers with smooth scrolling
+    navLinks.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                // Requirement 3: Smooth scrolling implementation
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+
+    // Requirement 3: Fallback for browsers that don't support CSS scroll-snap
+    if (!CSS.supports('scroll-snap-type', 'y mandatory')) {
+        console.log('Implementing fallback scroll-snap behavior');
+        
+        let isScrolling = false;
+        let scrollTimer;
+        
+        window.addEventListener('scroll', function() {
+            if (!isScrolling) {
+                isScrolling = true;
+            }
+            
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function() {
+                isScrolling = false;
+                snapToNearestSection();
+            }, 150);
+        });
+        
+        function snapToNearestSection() {
+            const scrollPosition = window.scrollY + headerOffset;
+            let closestSection = sections[0];
+            let closestDistance = Math.abs(sections[0].offsetTop - scrollPosition);
+            
+            sections.forEach(section => {
+                const distance = Math.abs(section.offsetTop - scrollPosition);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestSection = section;
+                }
+            });
+            
+            if (closestDistance > 100) { // Only snap if not already close
+                const targetPosition = closestSection.offsetTop - headerOffset;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
 
             function changeNav() {
                 let index = sections.length;
