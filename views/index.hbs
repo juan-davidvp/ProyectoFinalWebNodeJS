@@ -123,17 +123,15 @@
     .scroll-snap-container {
         scroll-snap-type: y mandatory; /* Enable vertical scroll snapping */
         scroll-behavior: smooth; /* Smooth scrolling transitions */
-        height: 100vh;
+        height: calc(100vh - 110px); /* Height minus header */
         overflow-y: auto;
-        /* Account for fixed header height */
-        padding-top: 110px;
-        margin-top: -110px;
+        margin-top: 110px; /* Start below the fixed header */
     }
 
-    /* Requirement 1: Each section with scroll-snap-align and minimum 100vh height */
+    /* Requirement 1: Each section with scroll-snap-align covering full available screen */
     .snap-section {
         scroll-snap-align: start; /* Enable scroll snapping for each section */
-        min-height: 100vh; /* Ensure full-screen visibility */
+        min-height: calc(100vh - 110px); /* Full screen minus header height */
         display: flex;
         align-items: center;
         position: relative;
@@ -363,7 +361,7 @@
         <!-- MODIFIED: Added background image from imagenes/IMG-DESK-TIA-SEGURA.jpg -->
         <!-- Requirement 1: Each section uses scroll-snap-align: start -->
         <!-- Requirement 1: Minimum height of 100vh for full-screen visibility -->
-        <section id="bienvenido" class="full-screen-section snap-section" style="background-image: url('imagenes/IMG-DESK-TIA-SEGURA.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <section id="bienvenido" class=" snap-section" style="background-image: url('imagenes/IMG-DESK-TIA-SEGURA.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             <div class="container-fluid h-100">
                 <div class="row h-100">
                     <!-- Requirement 5: Text and Button Alignment - vertically centered and left-aligned -->
