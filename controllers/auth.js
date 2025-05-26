@@ -29,7 +29,8 @@ exports.register = (req, res) => {
         message = 'Por favor, complete todos los campos.';
         console.log("Campos incompletos:", message);
         return res.render('login', {
-                error_login: message
+                error_login: message,
+                activeTab: 'register' // Para mantener la pestaña de registro activa
             });
         
     }
@@ -40,7 +41,8 @@ exports.register = (req, res) => {
             console.log("Error en la consulta de email existente:", error);
             message = 'Error al verificar el correo electrónico.';
             return res.render('login', {
-                error_login: message
+                error_login: message,
+                activeTab: 'register' // Para mantener la pestaña de registro activa
             });
         }
 
@@ -48,15 +50,13 @@ exports.register = (req, res) => {
             message = 'El email ya se encuentra registrado';
             return res.render('login', {
                 error_login: message,
-                name: name,
-                email: email
+                activeTab: 'register' // Para mantener la pestaña de registro activa
             });
         } else if (password !== passwordResend) {
             message = 'Las contraseñas no coinciden';
             return res.render('login', {
                 error_login: message,
-                name: name,
-                email: email
+                activeTab: 'register' // Para mantener la pestaña de registro activa
             });
         }
         console.log("Email no registrado, procediendo a insertar usuario...");
@@ -64,13 +64,27 @@ exports.register = (req, res) => {
             if (errorInsert) {
                 console.log("Error al insertar usuario:", errorInsert);
                 message = 'Error al registrar el usuario.' + req.session.user;
-                return res.render('login', { error_login: message });
+                return res.render('login', {
+                error_login: message,
+                activeTab: 'register' // Para mantener la pestaña de registro activa
+            });
             } else {
                 console.log("Usuario registrado correctamente:", resultsInsert);
                 message = 'Usuario Registrado Correctamente';
+                const registeredUserName = req.body.name; // O como obtengas el nombre de usuario
+                const registeredUserMail = req.body.email; // O como obtengas el email
+
+            // Opción 1: Renderizar con parámetros (si no quieres una redirección completa)
                 return res.render('login', {
-                                message: message
+                    registrationSuccessMessage: `El usuario: ${registeredUserName}, con correo: ${registeredUserMail} se ha registrado exitosamente!`,
+                    registeredUser: registeredUserName,
+                    registeredMail: registeredUserMail,
+                    showToast: true, // Un indicador para el script
+                    activeTab: 'register' // Para mantener la pestaña de registro activa
                 });
+                // NOTA: Para usar esta opción, el script en login.hbs debería leer estas variables de Handlebars en lugar de parámetros URL.
+                
+
             }
         });
 

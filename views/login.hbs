@@ -217,6 +217,17 @@
             display: block;
         }
 
+        .toast-container {
+            z-index: 2; /* Asegurar que el toast esté por encima de otros elementos */
+            position: fixed;
+            text-align: center;   
+        }
+
+        .toast-container h4{
+            text-align: center;   
+        }
+
+
         /* Espaciado entre campos */
         .mb-3 {
             margin-bottom: 1.5rem !important;
@@ -300,17 +311,17 @@
             <!-- Pestañas de navegación -->
             <ul class="nav nav-tabs" id="authTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-tab-pane" type="button" role="tab" aria-controls="login-tab-pane" aria-selected="true">Ingreso</button>
+                    <button class="nav-link {{#ifeq activeTab 'login'}}active{{else}}{{#unless activeTab}}active{{/unless}}{{/ifeq}}" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-tab-pane" type="button" role="tab" aria-controls="login-tab-pane" aria-selected="true">Ingreso</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="false">Registro</button>
+                    <button class="nav-link {{#ifeq activeTab 'register'}}active{{/ifeq}}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="{{#ifeq activeTab 'register'}}true{{else}}false{{/ifeq}}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="false">Registro</button>
                 </li>
             </ul>
 
             <!-- Contenido de las pestañas -->
             <div class="tab-content px-5" id="authTabContent">
                 <!-- Formulario de Login -->
-                <div class="tab-pane fade show active" id="login-tab-pane" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
+                <div class="tab-pane fade {{#ifeq activeTab 'login'}}show active{{else}}{{#unless activeTab}}show active{{/unless}}{{/ifeq}}" id="login-tab-pane" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
                     <h2>Bienvenido de nuevo!</h2>
                     <p class="form-text-description">Nos alegra que disfrutes de Davivienda</p>
                     
@@ -337,7 +348,7 @@
                 </div>
 
                 <!-- Formulario de Registro -->
-                <div class="tab-pane fade" id="register-tab-pane" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
+                <div class="tab-pane fade {{#ifeq activeTab 'register'}}show active{{/ifeq}}" id="register-tab-pane" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
                     <h2>¡Sé parte del mejor Banco de Colombia!</h2>
                     <p class="form-text-description">Disfruta de multiples beneficios que tiene Davivienda para ti</p>
                     
@@ -372,6 +383,18 @@
                         {{/if}}
                     </form>
                 </div>
+
+                <div class="toast-container position-fixed bottom-0 end-0 p-5">
+                    <div id="registrationToast" class="toast text-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header d-flex">
+                            <strong class="me-auto">Registro Exitoso</strong>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body " id="toastBodyMessage">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -389,6 +412,51 @@
                     tabTrigger.show();
                 });
             });
+        });
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Variables pasadas desde el contexto de Handlebars por el servidor
+            const showToastFromServer = {{#if showToast}}true{{else}}false{{/if}};
+            const registeredUserFromServer = {{#if registeredUser}}{{{json registeredUser}}}{{else}}null{{/if}};
+            const registeredMailFromServer = {{#if registeredMail}}{{{json registeredMail}}}{{else}}null{{/if}};
+
+            // Variable para la duración del Toast en milisegundos
+            // Por defecto, Bootstrap usa 5000 (5 segundos). Puedes cambiar este valor.
+            const toastDurationInMilliseconds = 3000; // Ejemplo: 7 segundos
+
+            const toastElement = document.getElementById('registrationToast');
+            const toastBodyMessageElement = document.getElementById('toastBodyMessage');
+            
+            if (showToastFromServer && registeredUserFromServer && registeredMailFromServer && toastElement && toastBodyMessageElement) {
+                // Construir el mensaje del toast
+                toastBodyMessageElement.textContent = `El usuario: ${registeredUserFromServer}, con correo: ${registeredMailFromServer} se ha registrado exitosamente!`;
+                
+                // Inicializar y mostrar el toast con la duración configurada
+                const toast = new bootstrap.Toast(toastElement, {
+                    delay: toastDurationInMilliseconds, // Establece la duración
+                    autohide: true // Asegúrate de que autohide esté en true (es el valor por defecto)
+                });
+                toast.show();
+
+                // Es importante que la pestaña de registro esté activa si se muestra el toast.
+                const registerTabButton = document.getElementById('register-tab');
+                if (registerTabButton && !registerTabButton.classList.contains('active')) {
+                    const tab = new bootstrap.Tab(registerTabButton);
+                    tab.show();
+                }
+
+                // Añadir un event listener para cuando el toast se oculte
+                toastElement.addEventListener('hidden.bs.toast', function () {
+                    // Activar la pestaña de Login
+                    const loginTabButton = document.getElementById('login-tab');
+                    if (loginTabButton) {
+                        const tab = new bootstrap.Tab(loginTabButton);
+                        tab.show();
+                    }
+                });
+            }
         });
     </script>
 </body>

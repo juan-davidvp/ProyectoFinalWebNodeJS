@@ -4,6 +4,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 //const cookieParser = require('cookie-parser'); // Si lo usas para otras cosas, si no, no es estrictamente necesario para express-session.
 const session = require('express-session'); // Importar express-session
+const hbs = require('hbs');
 
 // 2. Configuración de dotenv (cargar variables de entorno)
 dotenv.config({
@@ -45,6 +46,19 @@ app.use((req, res, next) => {
 
 // 8. Configuración del motor de plantillas (Handlebars)
 app.set('view engine', 'hbs');
+
+hbs.registerHelper('ifeq', function (a, b, options) {
+    if (a == b) 
+        { return options.fn(this); }
+        return options.inverse(this);
+    });
+
+
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
+
+
 
 // 9. Definición de Rutas (DESPUÉS de todos los middlewares de configuración general)
 app.use('/', require('./routes/page'));
