@@ -4,7 +4,7 @@ dotenv.config({path : "./.env"});
 const db = mysql.createConnection({ //Con esto le decimos a la app que vamos a usar mysql como base de datos.
     host: process.env.DATABASE_HOST, //Con esto le decimos a la app que la base de datos esta en localhost.
     user: process.env.DATABASE_USER, //Con esto le decimos a la app que el usuario de la base de datos es root.
-    password: process.env.DATABASE_PASSWORD, //Con esto le decimos a la app que la contraseña de la base de datos es vacia.    
+    email: process.env.DATABASE_email, //Con esto le decimos a la app que la contraseña de la base de datos es vacia.    
     database: process.env.DATABASE //Con esto le decimos a la app que la base de datos que vamos a usar es test.
 }); //Con esto le decimos a la app que la base de datos que vamos a usar es test.
 
@@ -15,6 +15,79 @@ db.connect((error) => {
         console.log("MySQL Conectado en auth.js...");
     }
 });
+
+
+exports.register = (req, res) => {
+    try {
+        console.log("Registro de usuario iniciado...");
+    const { name, email, password, passwordResend } = req.body;
+    let message = '';
+
+    console.log(name, email, password, passwordResend);
+
+    if (!name || !email || !password || !passwordResend) {
+        message = 'Por favor, complete todos los campos.';
+        console.log("Campos incompletos:", message);
+        return res.render('login', {
+                error_login: message
+            });
+        
+    }
+
+    db.query('SELECT email FROM users WHERE email = ?', [email], (error, results) => { 
+        
+        if (error) {
+            console.log("Error en la consulta de email existente:", error);
+            message = 'Error al verificar el correo electrónico.';
+            return res.render('login', {
+                error_login: message
+            });
+        }
+
+        if (results.length > 0) {
+            message = 'El email ya se encuentra registrado';
+            return res.render('login', {
+                error_login: message,
+                name: name,
+                email: email
+            });
+        } else if (password !== passwordResend) {
+            message = 'Las contraseñas no coinciden';
+            return res.render('login', {
+                error_login: message,
+                name: name,
+                email: email
+            });
+        }
+        console.log("Email no registrado, procediendo a insertar usuario...");
+        db.query('INSERT INTO users SET ?', { name: name, email: email, password: password }, (errorInsert, resultsInsert) => {
+            if (errorInsert) {
+                console.log("Error al insertar usuario:", errorInsert);
+                message = 'Error al registrar el usuario.' + req.session.user;
+                return res.render('login', { error_login: message });
+            } else {
+                console.log("Usuario registrado correctamente:", resultsInsert);
+                message = 'Usuario Registrado Correctamente';
+                return res.render('login', {
+                                message: message
+                });
+            }
+        });
+
+
+    });
+    } catch (error) {
+        console.log("Error en la función de registro:", error);
+        return res.render('login', {
+            message: 'Ocurrió un error inesperado al registrar el usuario.'
+        });
+    };
+    
+};
+
+
+
+        
 
 
 exports.login =  (req, res) => { // Convertida a async para usar await con bcrypt.compare
@@ -29,7 +102,7 @@ exports.login =  (req, res) => { // Convertida a async para usar await con bcryp
             // Comentario: El PDF indica renderizar 'index.hbs' para errores de login.
             // Asegúrate que tu 'index.hbs' puede mostrar la variable 'message'.
             return res.render('login', {
-                message: message
+                error_login: message
             });
         }
 
@@ -40,14 +113,14 @@ exports.login =  (req, res) => { // Convertida a async para usar await con bcryp
             if (error) {
                 console.log("Error en la consulta de login:", error);
                 message = 'Error interno del servidor al intentar iniciar sesión.';
-                return res.render('login', { message });
+                return res.render('login', { error_login: message });
             }
 
             // Comentario: Verificar si el usuario existe y si la contraseña coincide (Página 7 del PDF).
             if (results.length === 0) {
                 message = 'Email o Contraseña incorrecta';
                 return res.render('login', {
-                    message: message
+                    error_login: message
                 });
             } else {
                 
@@ -60,7 +133,7 @@ exports.login =  (req, res) => { // Convertida a async para usar await con bcryp
                 if (!passwordMatch) {
                     message = 'Email o Contraseña incorrecta';
                     return res.render('login', {
-                        message: message
+                        error_login: message
                     });
                 } else {
                     
@@ -81,7 +154,7 @@ exports.login =  (req, res) => { // Convertida a async para usar await con bcryp
                         if (err) {
                             console.error("Error saving session:", err);
                             message = 'Error al guardar la sesión.';
-                            return res.render('login', { message });
+                            return res.render('login', { error_login: message });
                         } else {
                             console.log("Sesion guardada con exito");
                             return res.render('Sign', {

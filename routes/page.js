@@ -11,4 +11,9 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
+// Ruta para renderizar login.hbs
+router.get('/sign', (req, res) => {
+    res.render('Sign');
+});
+
 module.exports = router;
