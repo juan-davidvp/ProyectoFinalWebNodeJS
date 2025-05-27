@@ -11,9 +11,17 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
-// Ruta para renderizar login.hbs
-router.get('/sign', (req, res) => {
-    res.render('Sign');
+
+router.get("/auth/login", (req, res) => {
+    if(!req.session.login || !req.session.user){
+        res.redirect('/');
+    }else{
+        res.render('/auth/login');
+        console.log('Session user:', req.session.login);
+    }
+
 });
 
 module.exports = router;
+
+

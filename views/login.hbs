@@ -310,9 +310,11 @@
 
             <!-- Pestañas de navegación -->
             <ul class="nav nav-tabs" id="authTab" role="tablist">
+                <!-- Tab Login -->
                 <li class="nav-item" role="presentation">
                     <button class="nav-link {{#ifeq activeTab 'login'}}active{{else}}{{#unless activeTab}}active{{/unless}}{{/ifeq}}" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-tab-pane" type="button" role="tab" aria-controls="login-tab-pane" aria-selected="true">Ingreso</button>
                 </li>
+                <!-- Tab Register -->
                 <li class="nav-item" role="presentation">
                     <button class="nav-link {{#ifeq activeTab 'register'}}active{{/ifeq}}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="{{#ifeq activeTab 'register'}}true{{else}}false{{/ifeq}}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab" aria-controls="register-tab-pane" aria-selected="false">Registro</button>
                 </li>

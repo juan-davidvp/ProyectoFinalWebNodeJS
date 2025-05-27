@@ -73,8 +73,9 @@ exports.register = (req, res) => {
                 message = 'Usuario Registrado Correctamente';
                 const registeredUserName = req.body.name; // O como obtengas el nombre de usuario
                 const registeredUserMail = req.body.email; // O como obtengas el email
+            
 
-            // Opción 1: Renderizar con parámetros (si no quieres una redirección completa)
+            // RENDER DEL REGISTER EXITOSO
                 return res.render('login', {
                     registrationSuccessMessage: `El usuario: ${registeredUserName}, con correo: ${registeredUserMail} se ha registrado exitosamente!`,
                     registeredUser: registeredUserName,
@@ -89,6 +90,7 @@ exports.register = (req, res) => {
         });
 
 
+
     });
     } catch (error) {
         console.log("Error en la función de registro:", error);
@@ -101,7 +103,18 @@ exports.register = (req, res) => {
 
 
 
-        
+exports.logout = (req, res) => {
+  console.log("sesion a borrar: ", req.session);
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session: ", err);
+      return res.status(500).send("Error logging out");
+    }
+    res.clearCookie("connect.sid");
+    res.redirect("/");
+    console.error("hola funciono perra");
+  });
+}
 
 
 exports.login =  (req, res) => { // Convertida a async para usar await con bcrypt.compare
@@ -171,7 +184,7 @@ exports.login =  (req, res) => { // Convertida a async para usar await con bcryp
                             return res.render('login', { error_login: message });
                         } else {
                             console.log("Sesion guardada con exito");
-                            return res.render('Sign', {
+                            return res.render('sign2', {
                                 message: message,
                                 data_user: req.session.user,
                                 accountNumber: '12345', // Ejemplo

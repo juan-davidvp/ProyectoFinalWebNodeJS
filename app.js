@@ -44,7 +44,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// 8. Configuración del motor de plantillas (Handlebars)
+// 8. Configuración del motor de plantillas IMPORTANTE PARA EL REGISTER 
 app.set('view engine', 'hbs');
 
 hbs.registerHelper('ifeq', function (a, b, options) {
